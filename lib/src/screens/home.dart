@@ -9,8 +9,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  Animation<double>? catAnimation;
-  AnimationController? catController;
+  late Animation<double> catAnimation;
+  late AnimationController catController;
 
   @override
   void initState() {
@@ -19,6 +19,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       duration: Duration(seconds: 2),
       vsync: this,
     );
+
+    catController.forward();
+
+    catAnimation = Tween<double>(
+      begin: 0.0,
+      end: 100.0,
+    ).animate(CurvedAnimation(parent: catController, curve: Curves.easeIn));
   }
 
   @override
@@ -31,6 +38,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   //helper method for building the animation
   Widget buildAnimation() {
-    return Cat();
+    return AnimatedBuilder(
+      animation: catAnimation,
+      builder: (context, child) {
+        return Container(
+          margin: EdgeInsets.only(top: catAnimation.value),
+          child: child,
+        );
+      },
+      child: Cat(),
+    );
+  }
+
+  @override
+  void dispose() {
+    catController.dispose();
+    super.dispose();
   }
 }
