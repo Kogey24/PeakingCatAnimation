@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
+import '../widgets/cat.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text('Animation')),
+      body: buildAnimation(),
+    );
+  }
+
+  //helper method for building the animation
+  Widget buildAnimation() {
+    return Cat();
   }
 }
