@@ -20,8 +20,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       vsync: this,
     );
 
-    catController.forward();
-
     catAnimation = Tween<double>(
       begin: 0.0,
       end: 100.0,
@@ -32,12 +30,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Animation')),
-      body: buildAnimation(),
+      body: GestureDetector(
+        onTap: onTap,
+        child: Stack(children: [buildCatAnimation(), buildBox()]),
+      ),
     );
   }
 
   //helper method for building the animation
-  Widget buildAnimation() {
+  Widget buildCatAnimation() {
     return AnimatedBuilder(
       animation: catAnimation,
       builder: (context, child) {
@@ -48,6 +49,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       },
       child: Cat(),
     );
+  }
+
+  void onTap() {
+    if (catController.status != AnimationStatus.completed) {
+      catController.forward();
+    }
+    catController.reverse();
+  }
+
+  Widget buildBox() {
+    return Container(width: 200, height: 200, color: Colors.brown);
   }
 
   @override
