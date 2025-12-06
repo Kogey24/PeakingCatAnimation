@@ -69,6 +69,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     return Container(width: 200, height: 200, color: Colors.brown);
   }
 
+  Widget buildLeftFlap() {
+    return Container(height: 10, width: 125.0, color: Colors.red);
+  }
+
   @override
   void dispose() {
     catController.dispose();
