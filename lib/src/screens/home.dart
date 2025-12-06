@@ -16,13 +16,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     catController = AnimationController(
-      duration: Duration(seconds: 2),
+      duration: Duration(milliseconds: 200),
       vsync: this,
     );
 
     catAnimation = Tween<double>(
-      begin: 0.0,
-      end: 100.0,
+      begin: -35.0,
+      end: -80.0,
     ).animate(CurvedAnimation(parent: catController, curve: Curves.easeIn));
   }
 
@@ -33,7 +33,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       body: GestureDetector(
         onTap: onTap,
         child: Center(
-          child: Stack(children: [buildCatAnimation(), buildBox()]),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [buildCatAnimation(), buildBox()],
+          ),
         ),
       ),
     );
@@ -45,7 +48,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       animation: catAnimation,
       builder: (context, child) {
         return Positioned(
-          bottom: catAnimation.value,
+          top: catAnimation.value,
           right: 0.0,
           left: 0.0,
           child: child!,
