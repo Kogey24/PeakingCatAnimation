@@ -31,12 +31,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     //boxanimation
     boxController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 300),
     );
     boxAnimation = Tween<double>(
-      begin: 0.0,
-      end: pi,
+      begin: pi * .6,
+      end: pi * .65,
     ).animate(CurvedAnimation(parent: boxController, curve: Curves.linear));
+
+    boxAnimation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        boxController.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        boxController.forward();
+      }
+    });
   }
 
   @override
@@ -85,10 +93,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget buildLeftFlap() {
     return Positioned(
       left: 3.0,
-      child: Transform.rotate(
-        angle: pi / 0.6,
-        alignment: Alignment.topLeft,
+      child: AnimatedBuilder(
+        animation: boxAnimation,
         child: Container(height: 10, width: 125.0, color: Colors.brown),
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: boxAnimation.value,
+            alignment: Alignment.topLeft,
+            child: child,
+          );
+        },
       ),
     );
   }
@@ -96,6 +110,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void dispose() {
     catController.dispose();
+    boxController.dispose();
     super.dispose();
   }
 }
